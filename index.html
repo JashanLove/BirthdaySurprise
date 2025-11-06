@@ -24,99 +24,127 @@ margin-top: 60px;
 animation: float 3s infinite ease-in-out;
 }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
+@keyframes float {
+0% { transform: translateY(0); }
+50% { transform: translateY(-10px); }
+100% { transform: translateY(0); }
+}
 
-  .hidden { display: none; }
+.gift {
+margin-top: 50px;
+font-size: 100px;
+cursor: pointer;
+transition: transform 0.5s;
+}
 
-  h1 {
-    font-size: 2.5rem;
-    color: #ff4081;
-    margin-top: 30px;
-    animation: fadeIn 2s ease, sparkle 3s infinite;
-  }
+.gift:hover {
+transform: scale(1.1);
+}
 
-  .letter {
-    max-width: 80%;
-    border-radius: 20px;
-    margin-top: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    opacity: 0;
-    animation: fadeIn 3s ease forwards;
-    animation-delay: 1s;
-  }
+.message, .letter, .love {
+display: none;
+animation: fadeIn 2s ease-in-out;
+}
 
-  #playMusic {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    background-color: pink;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(255, 192, 203, 0.6);
-  }
+.letter img {
+margin-top: 30px;
+width: 80%;
+max-width: 400px;
+border-radius: 20px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
 
-  @keyframes fadeIn { to { opacity: 1; } }
+.love {
+font-size: 2em;
+color: #ff2f92;
+margin-top: 40px;
+animation: float 3s infinite ease-in-out;
+}
 
-  .love-text {
-    font-size: 2.5rem;
-    color: red;
-    animation: fadeIn 3s ease forwards, sparkle 3s infinite;
-    animation-delay: 2s;
-  }
+.hearts {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+overflow: hidden;
+}
 
-  @keyframes sparkle {
-    0%, 100% { text-shadow: 0 0 10px #fff, 0 0 20px #ff4081, 0 0 30px #ff80ab; }
-    50% { text-shadow: 0 0 20px #fff, 0 0 30px #f50057, 0 0 40px #ff4081; }
-  }
+.heart {
+position: absolute;
+bottom: -10px;
+color: #ff4d88;
+font-size: 24px;
+animation: rise 6s linear infinite;
+}
+
+@keyframes rise {
+0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+}
 </style>
-</head>
-<body>
 
-<div id="giftStage">
-  <div class="gift-box" id="gift">
-    <div class="gift-lid"></div>
-  </div>
-</div>
+</head>  
+<body>  
+  <audio autoplay loop>  
+    <source src="https://github.com/JashanLove/BirthdaySurprise/raw/main/piano.mp3" type="audio/mp3">  
+  </audio>    <h1>🎁 Tap the Gift 🎁</h1>  
+  <div class="gift" id="gift">🎁</div>    <div class="message" id="message">  
+    <h1>🎉 Happy Birthday Dalvi 🎉</h1>  
+  </div>    <div class="letter" id="letter">  
+    <p>Here’s a letter for you 💌</p>  
+    <img src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Letter">  
+  </div>    <div class="love" id="love">  
+    <p>💖 I LOVE YOU 💖</p>  
+  </div>    <div class="hearts" id="hearts"></div>  <script>  
+const gift = document.getElementById('gift');  
+const message = document.getElementById('message');  
+const letter = document.getElementById('letter');  
+const love = document.getElementById('love');  
+const heartsContainer = document.getElementById('hearts');  
+  
+gift.addEventListener('click', () => {  
+  gift.style.display = 'none';  
+  message.style.display = 'block';  
+  document.body.style.background = 'black';  
+  document.body.style.color = 'white';  
+  
+  setTimeout(() => {  
+    document.body.style.background = 'linear-gradient(135deg, #ffe6f2, #fff5f9)';  
+    message.style.display = 'none';  
+    letter.style.display = 'block';  
+    startHearts();  
+  }, 5000);  
+  
+  setTimeout(() => {  
+    love.style.display = 'block';  
+  }, 10000);  
+});  
+  
+function startHearts() {  
+  setInterval(() => {  
+    const heart = document.createElement('div');  
+    heart.classList.add('heart');  
+    heart.textContent = '💗';  
+    heart.style.left = Math.random() * 100 + 'vw';  
+    heart.style.animationDuration = Math.random() * 2 + 4 + 's';  
+    heartsContainer.appendChild(heart);  
+    setTimeout(() => {  
+      heart.remove();  
+    }, 6000);  
+  }, 500);  
+}  
 
-<h1 id="birthdayText" class="hidden">🎉 Happy Birthday Dalvi! 🎉</h1>
-<p id="message" class="hidden">Here’s a letter for you 💌</p>
-
-<img id="letterImage" src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Letter" class="letter hidden">
-
-<button id="playMusic" class="hidden">🎵 Play Music</button>
-<audio id="bgMusic" src="https://github.com/JashanLove/BirthdaySurprise/raw/main/piano.mp3" loop></audio>
-
-<h2 id="loveText" class="love-text hidden">I LOVE YOU ❤️</h2>
-
-<script>
-  // Gift click animation
-  document.getElementById("gift").addEventListener("click", function() {
-    document.getElementById("giftStage").classList.add("hidden");
-    document.body.style.background = "black";
-    setTimeout(() => {
-      document.body.style.background = "linear-gradient(to bottom right, #ffe6f0, #fff0f5)";
-      document.getElementById("birthdayText").classList.remove("hidden");
-      setTimeout(() => {
-        document.getElementById("message").classList.remove("hidden");
-        document.getElementById("letterImage").classList.remove("hidden");
-        document.getElementById("playMusic").classList.remove("hidden");
-        setTimeout(() => {
-          document.getElementById("loveText").classList.remove("hidden");
-        }, 6000);
-      }, 3000);
-    }, 5000);
+      // Fixed Play button logic (works on mobile/tablet)
+  document.getElementById("playMusic").addEventListener("click", async function() {
+    const music = document.getElementById("bgMusic");
+    try {
+      await music.play();
+      this.style.display = "none";
+    } catch (err) {
+      alert("Please tap again to start the music ❤️");
+    }
   });
-
-  // Play button logic
-  document.getElementById("playMusic").addEventListener("click", function() {
-    document.getElementById("bgMusic").play();
-    this.style.display = "none";
-  });
-</script>
-</body>
+</script>  </body>  
 </html>
