@@ -82,6 +82,18 @@
     animation: rise 6s linear infinite;
   }
 
+    #playMusic {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background-color: pink;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 192, 203, 0.6);
+    }
+
   @keyframes rise {
     0% { transform: translateY(0) rotate(0deg); opacity: 1; }
     100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
@@ -148,8 +160,20 @@ function startHearts() {
     }, 6000);
   }, 500);
 }
+
+    // Fixed Play button logic (works on mobile/tablet)
+  document.getElementById("playMusic").addEventListener("click", async function() {
+    const music = document.getElementById("bgMusic");
+    try {
+      await music.play();
+      this.style.display = "none";
+    } catch (err) {
+      alert("Please tap again to start the music ❤️");
+    }
+  });
 </script>
 </body>
 </html>
+
 
 
