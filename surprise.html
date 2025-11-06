@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Dalvi 💖</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(120deg, #ffe5ec, #ffb3c6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    font-family: 'Segoe UI', sans-serif;
+    transition: background 2s ease;
+  }
+
+  h1, h2 {
+    color: #ff4b7a;
+    text-align: center;
+    margin: 20px;
+  }
+
+  #gift {
+    width: 200px;
+    cursor: pointer;
+    transition: transform 0.5s;
+  }
+  #gift:hover {
+    transform: scale(1.1);
+  }
+
+  #message, #subtext, #love {
+    opacity: 0;
+    transition: opacity 2s;
+  }
+
+  #letterSection {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #letter {
+    max-width: 90%;
+    border-radius: 10px;
+    margin: 20px;
+    box-shadow: 0 0 20px rgba(255, 100, 130, 0.4);
+  }
+
+  /* Floating hearts and petals */
+  .heart {
+    position: fixed;
+    bottom: -10px;
+    width: 15px;
+    height: 15px;
+    background: rgba(255, 90, 130, 0.9);
+    transform: rotate(45deg);
+    animation: floatUp 8s linear infinite;
+    border-radius: 0;
+  }
+
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: rgba(255, 90, 130, 0.9);
+    border-radius: 50%;
+  }
+  .heart::before { top: -7px; left: 0; }
+  .heart::after { left: -7px; top: 0; }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+    100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+  }
+
+  #love {
+    font-size: 2em;
+    color: #ff3366;
+    font-weight: bold;
+    animation: pulse 2s infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { transform: scale(1); opacity: 0.7; }
+    to { transform: scale(1.2); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<audio id="music" src="piano.mp3" autoplay loop></audio>
+
+<!-- Gift box -->
+<img id="gift" src="https://cdn-icons-png.flaticon.com/512/3081/3081879.png" alt="Gift Box">
+
+<!-- Messages -->
+<h1 id="message">Happy Birthday Dalvi 🎉</h1>
+<h2 id="subtext">Here’s a letter for you...</h2>
+
+<!-- Letter section -->
+<div id="letterSection">
+  <img id="letter" src="letter.jpg" alt="Letter Image">
+  <h2 id="love">I LOVE YOU ❤️</h2>
+</div>
+
+<script>
+  const gift = document.getElementById('gift');
+  const message = document.getElementById('message');
+  const subtext = document.getElementById('subtext');
+  const letterSection = document.getElementById('letterSection');
+  const love = document.getElementById('love');
+  const music = document.getElementById('music');
+
+  // spawn floating hearts
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (5 + Math.random() * 5) + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 10000);
+  }
+
+  setInterval(createHeart, 600);
+
+  gift.addEventListener('click', () => {
+    // change background to dark for dramatic reveal
+    document.body.style.background = 'black';
+    gift.style.display = 'none';
+
+    // show Happy Birthday
+    message.style.color = '#fff';
+    message.style.opacity = 1;
+
+    setTimeout(() => {
+      message.style.opacity = 0;
+      document.body.style.background = 'linear-gradient(120deg, #ffe5ec, #ffb3c6)';
+    }, 3000);
+
+    setTimeout(() => {
+      subtext.style.opacity = 1;
+    }, 4000);
+
+    setTimeout(() => {
+      subtext.style.opacity = 0;
+      letterSection.style.display = 'flex';
+    }, 6000);
+
+    setTimeout(() => {
+      love.style.opacity = 1;
+    }, 9000);
+  });
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Dalvi 💖</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(120deg, #ffe5ec, #ffb3c6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    font-family: 'Segoe UI', sans-serif;
+    transition: background 2s ease;
+  }
+
+  h1, h2 {
+    color: #ff4b7a;
+    text-align: center;
+    margin: 20px;
+  }
+
+  #gift {
+    width: 200px;
+    cursor: pointer;
+    transition: transform 0.5s;
+  }
+  #gift:hover {
+    transform: scale(1.1);
+  }
+
+  #message, #subtext, #love {
+    opacity: 0;
+    transition: opacity 2s;
+  }
+
+  #letterSection {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #letter {
+    max-width: 90%;
+    border-radius: 10px;
+    margin: 20px;
+    box-shadow: 0 0 20px rgba(255, 100, 130, 0.4);
+  }
+
+  /* Floating hearts and petals */
+  .heart {
+    position: fixed;
+    bottom: -10px;
+    width: 15px;
+    height: 15px;
+    background: rgba(255, 90, 130, 0.9);
+    transform: rotate(45deg);
+    animation: floatUp 8s linear infinite;
+    border-radius: 0;
+  }
+
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: rgba(255, 90, 130, 0.9);
+    border-radius: 50%;
+  }
+  .heart::before { top: -7px; left: 0; }
+  .heart::after { left: -7px; top: 0; }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+    100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
+  }
+
+  #love {
+    font-size: 2em;
+    color: #ff3366;
+    font-weight: bold;
+    animation: pulse 2s infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { transform: scale(1); opacity: 0.7; }
+    to { transform: scale(1.2); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<audio id="music" src="piano.mp3" autoplay loop></audio>
+
+<!-- Gift box -->
+<img id="gift" src="https://cdn-icons-png.flaticon.com/512/3081/3081879.png" alt="Gift Box">
+
+<!-- Messages -->
+<h1 id="message">Happy Birthday Dalvi 🎉</h1>
+<h2 id="subtext">Here’s a letter for you...</h2>
+
+<!-- Letter section -->
+<div id="letterSection">
+  <img id="letter" src="letter.jpg" alt="Letter Image">
+  <h2 id="love">I LOVE YOU ❤️</h2>
+</div>
+
+<script>
+  const gift = document.getElementById('gift');
+  const message = document.getElementById('message');
+  const subtext = document.getElementById('subtext');
+  const letterSection = document.getElementById('letterSection');
+  const love = document.getElementById('love');
+  const music = document.getElementById('music');
+
+  // spawn floating hearts
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (5 + Math.random() * 5) + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 10000);
+  }
+
+  setInterval(createHeart, 600);
+
+  gift.addEventListener('click', () => {
+    // change background to dark for dramatic reveal
+    document.body.style.background = 'black';
+    gift.style.display = 'none';
+
+    // show Happy Birthday
+    message.style.color = '#fff';
+    message.style.opacity = 1;
+
+    setTimeout(() => {
+      message.style.opacity = 0;
+      document.body.style.background = 'linear-gradient(120deg, #ffe5ec, #ffb3c6)';
+    }, 3000);
+
+    setTimeout(() => {
+      subtext.style.opacity = 1;
+    }, 4000);
+
+    setTimeout(() => {
+      subtext.style.opacity = 0;
+      letterSection.style.display = 'flex';
+    }, 6000);
+
+    setTimeout(() => {
+      love.style.opacity = 1;
+    }, 9000);
+  });
+</script>
+
+</body>
+</html>
