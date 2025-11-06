@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,149 +7,128 @@
 <style>
   body {
     margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #ffe6f2, #fff5f9);
-    font-family: 'Poppins', sans-serif;
-    text-align: center;
+    background: linear-gradient(to bottom right, #ffe6f0, #fff0f5);
+    font-family: "Poppins", sans-serif;
     overflow-x: hidden;
-    animation: fadeIn 3s ease-in-out;
+    text-align: center;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  .gift-box {
+    margin-top: 100px;
+    width: 150px;
+    height: 150px;
+    background: pink;
+    border-radius: 10px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 20px rgba(255, 105, 180, 0.4);
+    animation: float 2s ease-in-out infinite;
   }
 
-  h1 {
-    font-size: 2.5em;
-    color: #ff4081;
-    margin-top: 60px;
-    animation: float 3s infinite ease-in-out;
+  .gift-lid {
+    width: 150px;
+    height: 30px;
+    background: hotpink;
+    border-radius: 10px 10px 0 0;
+    position: absolute;
+    top: -30px;
+    left: 0;
   }
 
   @keyframes float {
-    0% { transform: translateY(0); }
+    0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
-    100% { transform: translateY(0); }
   }
 
-  .gift {
-    margin-top: 50px;
-    font-size: 100px;
-    cursor: pointer;
-    transition: transform 0.5s;
-  }
+  .hidden { display: none; }
 
-  .gift:hover {
-    transform: scale(1.1);
-  }
-
-  .message, .letter, .love {
-    display: none;
-    animation: fadeIn 2s ease-in-out;
-  }
-
-  .letter img {
+  h1 {
+    font-size: 2.5rem;
+    color: #ff4081;
     margin-top: 30px;
-    width: 80%;
-    max-width: 400px;
+    animation: fadeIn 2s ease, sparkle 3s infinite;
+  }
+
+  .letter {
+    max-width: 80%;
     border-radius: 20px;
+    margin-top: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    opacity: 0;
+    animation: fadeIn 3s ease forwards;
+    animation-delay: 1s;
   }
 
-  .love {
-    font-size: 2em;
-    color: #ff2f92;
-    margin-top: 40px;
-    animation: float 3s infinite ease-in-out;
+  #playMusic {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background-color: pink;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 192, 203, 0.6);
   }
 
-  .hearts {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .love-text {
+    font-size: 2.5rem;
+    color: red;
+    animation: fadeIn 3s ease forwards, sparkle 3s infinite;
+    animation-delay: 2s;
   }
 
-  .heart {
-    position: absolute;
-    bottom: -10px;
-    color: #ff4d88;
-    font-size: 24px;
-    animation: rise 6s linear infinite;
-  }
-
-  @keyframes rise {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+  @keyframes sparkle {
+    0%, 100% { text-shadow: 0 0 10px #fff, 0 0 20px #ff4081, 0 0 30px #ff80ab; }
+    50% { text-shadow: 0 0 20px #fff, 0 0 30px #f50057, 0 0 40px #ff4081; }
   }
 </style>
 </head>
 <body>
-  <audio autoplay loop>
-    <source src="https://github.com/JashanLove/BirthdaySurprise/raw/main/piano.mp3" type="audio/mp3">
-  </audio>
 
-  <h1>🎁 Tap the Gift 🎁</h1>
-  <div class="gift" id="gift">🎁</div>
-
-  <div class="message" id="message">
-    <h1>🎉 Happy Birthday Dalvi 🎉</h1>
+<div id="giftStage">
+  <div class="gift-box" id="gift">
+    <div class="gift-lid"></div>
   </div>
+</div>
 
-  <div class="letter" id="letter">
-    <p>Here’s a letter for you 💌</p>
-    <img src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/raw/main/letter.jpg" alt="Letter">
-  </div>
+<h1 id="birthdayText" class="hidden">🎉 Happy Birthday Dalvi! 🎉</h1>
+<p id="message" class="hidden">Here’s a letter for you 💌</p>
 
-  <div class="love" id="love">
-    <p>💖 I LOVE YOU 💖</p>
-  </div>
+<img id="letterImage" src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Letter" class="letter hidden">
 
-  <div class="hearts" id="hearts"></div>
+<button id="playMusic" class="hidden">🎵 Play Music</button>
+<audio id="bgMusic" src="https://github.com/JashanLove/BirthdaySurprise/raw/main/piano.mp3" loop></audio>
+
+<h2 id="loveText" class="love-text hidden">I LOVE YOU ❤️</h2>
 
 <script>
-const gift = document.getElementById('gift');
-const message = document.getElementById('message');
-const letter = document.getElementById('letter');
-const love = document.getElementById('love');
-const heartsContainer = document.getElementById('hearts');
-
-gift.addEventListener('click', () => {
-  gift.style.display = 'none';
-  message.style.display = 'block';
-  document.body.style.background = 'black';
-  document.body.style.color = 'white';
-
-  setTimeout(() => {
-    document.body.style.background = 'linear-gradient(135deg, #ffe6f2, #fff5f9)';
-    message.style.display = 'none';
-    letter.style.display = 'block';
-    startHearts();
-  }, 5000);
-
-  setTimeout(() => {
-    love.style.display = 'block';
-  }, 10000);
-});
-
-function startHearts() {
-  setInterval(() => {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.textContent = '💗';
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.animationDuration = Math.random() * 2 + 4 + 's';
-    heartsContainer.appendChild(heart);
+  // Gift click animation
+  document.getElementById("gift").addEventListener("click", function() {
+    document.getElementById("giftStage").classList.add("hidden");
+    document.body.style.background = "black";
     setTimeout(() => {
-      heart.remove();
-    }, 6000);
-  }, 500);
-}
+      document.body.style.background = "linear-gradient(to bottom right, #ffe6f0, #fff0f5)";
+      document.getElementById("birthdayText").classList.remove("hidden");
+      setTimeout(() => {
+        document.getElementById("message").classList.remove("hidden");
+        document.getElementById("letterImage").classList.remove("hidden");
+        document.getElementById("playMusic").classList.remove("hidden");
+        setTimeout(() => {
+          document.getElementById("loveText").classList.remove("hidden");
+        }, 6000);
+      }, 3000);
+    }, 5000);
+  });
+
+  // Play button logic
+  document.getElementById("playMusic").addEventListener("click", function() {
+    document.getElementById("bgMusic").play();
+    this.style.display = "none";
+  });
 </script>
 </body>
 </html>
-
