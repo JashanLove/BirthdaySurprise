@@ -1,20 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Surprise</title>
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #ffe6f2, #fff5f9);
-    font-family: 'Poppins', sans-serif;
-    text-align: center;
-    overflow-x: hidden;
-    animation: fadeIn 3s ease-in-out;
-  }
-
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Birthday Surprise</title>  
+<style>  
+  body {  
+    margin: 0;  
+    padding: 0;  
+    background: linear-gradient(135deg, #ffe6f2, #fff5f9);  
+    font-family: 'Poppins', sans-serif;  
+    text-align: center;  
+    overflow-x: hidden;  
+    animation: fadeIn 3s ease-in-out;  
+  }  
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -87,161 +86,139 @@
     100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
   }
 
-  /* Fireworks Canvas */
-  #fireworksCanvas {
+  canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 10;
+    z-index: 9999;
   }
-</style>
-</head>
+</style>  
+</head>  
+<body>  
+  <audio autoplay loop>  
+    <source src="https://github.com/JashanLove/BirthdaySurprise/raw/main/piano.mp3" type="audio/mp3">  
+  </audio>  
 
-<body>
-  <h1>🎁 Tap the Gift 🎁</h1>
-  <div class="gift" id="gift">🎁</div>
+  <h1>🎁 Tap the Gift 🎁</h1>  
+  <div class="gift" id="gift">🎁</div>  
 
-  <div class="message" id="message">
-    <h1>🎉 Happy Birthday Dalvi 🎉</h1>
-  </div>
+  <div class="message" id="message">  
+    <h1>🎉 Happy Birthday Dalvi 🎉</h1>  
+  </div>  
 
-  <div class="letter" id="letter">
-    <p>Here’s a letter for you 💌</p>
-    <img src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Letter">
-  </div>
+  <div class="letter" id="letter">  
+    <p>Here’s a letter for you 💌</p>  
+    <img src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Letter">  
+  </div>  
 
-  <div class="love" id="love">
-    <p>💖 I LOVE YOU 💖</p>
-  </div>
+  <div class="love" id="love">  
+    <p>💖 I LOVE YOU 💖</p>  
+  </div>  
 
-  <div class="hearts" id="hearts"></div>
+  <div class="hearts" id="hearts"></div>  
 
-  <canvas id="fireworksCanvas"></canvas>
+  <canvas id="fireworks"></canvas>
 
-  <audio id="bgMusic" loop>
-    <source src="https://github.com/JashanLove/BirthdaySurprise/raw/main/piano.mp3" type="audio/mp3">
-  </audio>
+  <script>  
+  const gift = document.getElementById('gift');  
+  const message = document.getElementById('message');  
+  const letter = document.getElementById('letter');  
+  const love = document.getElementById('love');  
+  const heartsContainer = document.getElementById('hearts');  
+  const canvas = document.getElementById('fireworks');  
+  const ctx = canvas.getContext('2d');  
 
-  <audio id="fireworksSound">
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9f4c7e33e5.mp3?filename=fireworks-117094.mp3" type="audio/mpeg">
-  </audio>
+  canvas.width = window.innerWidth;  
+  canvas.height = window.innerHeight;  
 
-<script>
-const gift = document.getElementById('gift');
-const message = document.getElementById('message');
-const letter = document.getElementById('letter');
-const love = document.getElementById('love');
-const heartsContainer = document.getElementById('hearts');
-const bgMusic = document.getElementById('bgMusic');
-const fireworksSound = document.getElementById('fireworksSound');
-const canvas = document.getElementById('fireworksCanvas');
-const ctx = canvas.getContext('2d');
+  let fireworks = [];  
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
+  gift.addEventListener('click', () => {  
+    gift.style.display = 'none';  
+    message.style.display = 'block';  
+    document.body.style.background = 'black';  
+    document.body.style.color = 'white';  
 
-let fireworks = [];
+    playFireworksSound();
+    startFireworks(); // 🎆 start fireworks
 
-gift.addEventListener('click', () => {
-  // Play background and fireworks audio
-  bgMusic.play().catch(err => console.log("Music playback blocked:", err));
-  fireworksSound.play().catch(err => console.log("Sound playback blocked:", err));
+    setTimeout(() => {  
+      document.body.style.background = 'linear-gradient(135deg, #ffe6f2, #fff5f9)';  
+      message.style.display = 'none';  
+      letter.style.display = 'block';  
+      startHearts();  
+    }, 5000);  
 
-  // Show fireworks for few seconds
-  startFireworks();
-  setTimeout(() => fireworks = [], 4000);
+    setTimeout(() => {  
+      love.style.display = 'block';  
+    }, 10000);  
+  });  
 
-  gift.style.display = 'none';
-  message.style.display = 'block';
-  document.body.style.background = 'black';
-  document.body.style.color = 'white';
+  // Fireworks setup  
+  function random(min, max) {
+    return Math.random() * (max - min) + min;
+  }
 
-  setTimeout(() => {
-    document.body.style.background = 'linear-gradient(135deg, #ffe6f2, #fff5f9)';
-    message.style.display = 'none';
-    letter.style.display = 'block';
-    startHearts();
-  }, 5000);
+  function startFireworks() {
+    const duration = 10000; // increased duration (was 5000ms)
+    const endTime = Date.now() + duration;
 
-  setTimeout(() => {
-    love.style.display = 'block';
-  }, 10000);
-});
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (Math.random() < 0.08) {
+        createFirework();
+      }
+      fireworks.forEach((f, i) => {
+        f.y += f.dy;
+        f.dy += 0.05;
+        f.life -= 1;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = f.color;
+        ctx.fill();
+        if (f.life <= 0) fireworks.splice(i, 1);
+      });
+      if (Date.now() < endTime) requestAnimationFrame(animate);
+      else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    animate();
+  }
 
-// Hearts animation
-function startHearts() {
-  setInterval(() => {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.textContent = '💗';
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.animationDuration = Math.random() * 2 + 4 + 's';
-    heartsContainer.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
-  }, 500);
-}
-
-// Fireworks animation
-function startFireworks() {
-  const colors = ['#ff007f', '#ff6600', '#ffcc00', '#33ccff', '#cc33ff'];
-  function Firework(x, y) {
-    this.x = x;
-    this.y = y;
-    this.particles = [];
-    for (let i = 0; i < 40; i++) {
-      this.particles.push({
-        x: x,
-        y: y,
-        angle: Math.random() * 2 * Math.PI,
-        speed: Math.random() * 4 + 2,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        opacity: 1
+  function createFirework() {
+    const x = random(0, canvas.width);
+    const y = random(0, canvas.height / 2);
+    for (let i = 0; i < 50; i++) {
+      fireworks.push({
+        x,
+        y,
+        dy: random(-2, 2),
+        color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+        life: 80
       });
     }
   }
 
-  Firework.prototype.update = function() {
-    this.particles.forEach(p => {
-      p.x += Math.cos(p.angle) * p.speed;
-      p.y += Math.sin(p.angle) * p.speed;
-      p.opacity -= 0.02;
-    });
-  };
-
-  Firework.prototype.draw = function() {
-    this.particles.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = p.opacity;
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-  };
-
-  function animateFireworks() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    fireworks.forEach((f, i) => {
-      f.update();
-      f.draw();
-      if (f.particles.every(p => p.opacity <= 0)) fireworks.splice(i, 1);
-    });
-    requestAnimationFrame(animateFireworks);
+  function playFireworksSound() {
+    const audio = new Audio('https://github.com/JashanLove/BirthdaySurprise/raw/main/fireworks.mp3');
+    audio.play();
   }
 
-  fireworks.push(new Firework(canvas.width / 2, canvas.height / 2));
-  for (let i = 0; i < 3; i++) {
-    fireworks.push(new Firework(Math.random() * canvas.width, Math.random() * canvas.height * 0.5));
-  }
-  animateFireworks();
-}
-</script>
-</body>
+  function startHearts() {  
+    setInterval(() => {  
+      const heart = document.createElement('div');  
+      heart.classList.add('heart');  
+      heart.textContent = '💗';  
+      heart.style.left = Math.random() * 100 + 'vw';  
+      heart.style.animationDuration = Math.random() * 2 + 4 + 's';  
+      heartsContainer.appendChild(heart);  
+      setTimeout(() => {  
+        heart.remove();  
+      }, 6000);  
+    }, 500);  
+  }  
+  </script>  
+</body>  
 </html>
