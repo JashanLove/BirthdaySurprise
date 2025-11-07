@@ -1,319 +1,134 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birthday Surprise</title>
 <style>
-  :root{
-    --bg1:#ffe6f2; --bg2:#fff5f9;
-    --accent:#ff4081;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: linear-gradient(135deg,var(--bg1),var(--bg2));
-    color:#3b2b2b;
-    overflow:hidden;
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffd6e0, #fff0f5, #ffe6f2);
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 
-  /* header text above gift */
-  .gift-header{
-    font-size:1.4rem;
-    color:var(--accent);
-    margin-bottom:12px;
-    text-align:center;
-    opacity:1;
+  .gift-box {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    background: #ff4da6;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
   }
 
-  /* centered gift area */
-  .gift-wrap{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    gap:12px;
+  .gift-box::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 150px;
+    background: #fff;
+    left: 65px;
   }
 
-  /* SVG gift container size */
-  .gift-svg {
-    width:160px;
-    height:160px;
-    cursor:pointer;
-    perspective:800px; /* gives nicer 3D */
+  .gift-box::after {
+    content: '';
+    position: absolute;
+    height: 20px;
+    width: 150px;
+    background: #fff;
+    top: 65px;
   }
 
-  /* lid element will rotate on X */
-  .lid {
-    transform-origin: 50% 100%;
-    transition: transform 700ms cubic-bezier(.2,.9,.3,1);
-    transform: rotateX(0deg);
+  .ribbon {
+    position: absolute;
+    top: -25px;
+    left: 35px;
+    width: 80px;
+    height: 50px;
+    background: #ff66b3;
+    border-radius: 50%;
+    transform: rotate(45deg);
   }
 
-  /* small hover pop */
-  .gift-svg:hover { transform: translateY(-6px); transition: transform 220ms ease; }
-
-  /* sparkle text (Happy Birthday) */
-  #sparkleText{
-    display:none;
-    font-size:1.9rem;
-    color: #ff66b2;
-    text-align:center;
-    animation: sparkle 1.2s linear infinite;
-    text-shadow: 0 0 8px rgba(255,102,178,0.9);
-  }
-  @keyframes sparkle{
-    0% { filter:brightness(1); }
-    50% { filter:brightness(1.35); transform: translateY(-2px); }
-    100% { filter:brightness(1); transform: translateY(0); }
+  .message {
+    position: absolute;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    top: -40px;
+    width: 100%;
+    color: #ff1493;
+    opacity: 1;
+    transition: opacity 1s ease;
   }
 
-  /* letter */
-  #letterContainer{
-    display:none;
-    margin-top:18px;
-    text-align:center;
-    z-index:2;
-  }
-  #letterContainer p{ margin:6px 0 12px; color:#7a5a66; }
-  #letterImage{
-    width:85%;
-    max-width:520px;
-    border-radius:12px;
-    box-shadow: 0 18px 40px rgba(255,80,120,0.06);
-    display:block;
+  #letter {
+    display: none;
+    position: absolute;
+    width: 80%;
+    max-width: 400px;
+    height: auto;
+    z-index: 5;
+    animation: fadeIn 2s forwards;
   }
 
-  /* love text */
-  #loveText{
-    display:none;
-    margin-top:18px;
-    font-size:2rem;
-    font-weight:700;
-    background: linear-gradient(90deg,#ff3366,#ff66b2,#ff99c7);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    text-align:center;
-    filter: drop-shadow(0 6px 18px rgba(255,50,120,0.15));
-    animation: pulse 1400ms ease-in-out infinite alternate;
-  }
-  @keyframes pulse{ from{ transform:scale(1); } to{ transform:scale(1.06); } }
-
-  /* hearts container absolute */
-  .hearts{ position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; overflow:hidden; }
-
-  .heart{
-    position:absolute;
-    bottom:-20px;
-    font-size:20px;
-    opacity:0.95;
-    transform: translateY(0) scale(1);
-    animation: rise 6s linear forwards;
-  }
-  @keyframes rise{
-    0% { transform: translateY(0) rotate(0deg); opacity:1; }
-    100% { transform: translateY(-120vh) rotate(360deg); opacity:0; }
+  #loveText {
+    display: none;
+    font-size: 30px;
+    color: #ff1a75;
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: center;
+    animation: fadeIn 3s forwards;
   }
 
-  /* small helpers for responsiveness */
-  @media (max-width:520px){
-    .gift-svg { width:130px; height:130px; }
-    #sparkleText{ font-size:1.6rem; }
-    #loveText{ font-size:1.6rem; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
   }
+
+  .hidden { display: none; }
 </style>
 </head>
 <body>
 
-<!-- audio element (no autoplay — we'll start on click to satisfy mobile) -->
-<audio id="bgMusic" preload="auto" loop src="https://github.com/JashanLove/BirthdaySurprise/raw/main/piano.mp3"></audio>
-
-<!-- header + gift -->
-<div class="gift-wrap">
-  <div class="gift-header">Here's a gift for you 🎁</div>
-
-  <!-- SVG Gift (lid has id lidRect to rotate) -->
-  <div class="gift-svg" id="giftBox" aria-label="Gift box - click to open">
-    <svg viewBox="0 0 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img">
-      <!-- shadow under box -->
-      <ellipse cx="100" cy="170" rx="48" ry="10" fill="rgba(0,0,0,0.12)"/>
-
-      <!-- lid (make it group so we can rotate) -->
-      <g id="lidGroup">
-        <rect id="lidRect" x="25" y="10" width="150" height="40" rx="8" ry="8" fill="#ff80bf" stroke="#ff4da6" stroke-width="1.8"/>
-        <!-- bow on lid -->
-        <g transform="translate(100,30) rotate(0)">
-          <path d="M-6 -2 C -18 -12 -28 -2 -6 10" fill="#ff4da6"/>
-          <path d="M6 -2 C 18 -12 28 -2 6 10" fill="#ff4da6"/>
-        </g>
-      </g>
-
-      <!-- box body -->
-      <rect x="20" y="45" width="160" height="110" rx="10" ry="10" fill="url(#boxGrad)" stroke="#ff3366" stroke-width="1.6"/>
-      <!-- ribbon vertical -->
-      <rect x="95" y="45" width="18" height="110" fill="#fff"/>
-      <!-- ribbon horizontal -->
-      <rect x="20" y="95" width="160" height="18" fill="#fff"/>
-      <!-- cute accent (a small shine) -->
-      <path d="M38 60 q 10 -8 20 0" stroke="#fff5" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-      <defs>
-        <linearGradient id="boxGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#ff5f9e"/>
-          <stop offset="1" stop-color="#ff2e74"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  </div>
+<div class="gift-box" id="giftBox">
+  <div class="ribbon"></div>
+  <div class="message">Here's a gift for you 🎁</div>
 </div>
 
-<!-- sparkle text -->
-<div id="sparkleText">🎉 Happy Birthday Dalvi 🎉</div>
+<img id="letter" src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Letter">
+<div id="loveText">I love you Bandri ❤️</div>
 
-<!-- letter + love text (hidden until reveal) -->
-<div id="letterContainer">
-  <p>Here’s a letter for you 💌</p>
-  <img id="letterImage" src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Handwritten letter">
-</div>
-
-<div id="loveText">I LOVE YOU ❤️</div>
-
-<!-- heart layer -->
-<div class="hearts" id="hearts"></div>
+<audio id="pianoMusic" preload="auto">
+  <source src="https://github.com/JashanLove/BirthdaySurprise/raw/main/piano.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-/* Gift interaction logic (uses the SVG lid - rotate with transform style) */
 const giftBox = document.getElementById('giftBox');
-const lidRect = document.getElementById('lidRect'); // rectangle in svg grouped as lid
-const sparkleText = document.getElementById('sparkleText');
-const letterContainer = document.getElementById('letterContainer');
+const letter = document.getElementById('letter');
 const loveText = document.getElementById('loveText');
-const heartsLayer = document.getElementById('hearts');
-const bgMusic = document.getElementById('bgMusic');
+const pianoMusic = document.getElementById('pianoMusic');
 
-/* Helper: add heart */
-function spawnHeart() {
-  const el = document.createElement('div');
-  el.className = 'heart';
-  el.textContent = ['💗','💝','💞'][Math.floor(Math.random()*3)];
-  el.style.left = (Math.random()*85 + 5) + 'vw';
-  el.style.fontSize = (Math.random()*18 + 14) + 'px';
-  el.style.animationDuration = (5 + Math.random()*4) + 's';
-  heartsLayer.appendChild(el);
-  setTimeout(()=> el.remove(), 9000);
-}
-
-/* create multiple hearts interval */
-let heartsInterval = null;
-
-function showHearts() {
-  if (heartsInterval) return;
-  heartsInterval = setInterval(spawnHeart, 450);
-}
-
-/* Sparkle particles on canvas for short time */
-const canvas = document.createElement('canvas');
-canvas.style.position = 'fixed';
-canvas.style.left = '0';
-canvas.style.top = '0';
-canvas.style.pointerEvents = 'none';
-canvas.width = innerWidth;
-canvas.height = innerHeight;
-document.body.appendChild(canvas);
-const ctx = canvas.getContext('2d');
-let particles = [];
-function createParticles(x,y){
-  for (let i=0;i<16;i++){
-    particles.push({
-      x, y,
-      vx: (Math.random()-0.5)*6,
-      vy: (Math.random()-1.5)*6,
-      life: 60 + Math.random()*40,
-      r: 1 + Math.random()*3,
-      color: `hsl(${Math.random()*360},80%,65%)`
-    });
-  }
-}
-function updateParticles(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  for (let i = particles.length-1; i>=0; i--){
-    const p = particles[i];
-    ctx.beginPath();
-    ctx.fillStyle = p.color;
-    ctx.arc(p.x, p.y, p.r,0,Math.PI*2);
-    ctx.fill();
-    p.x += p.vx;
-    p.y += p.vy;
-    p.vy += 0.06;
-    p.life--;
-    if (p.life<=0) particles.splice(i,1);
-  }
-  requestAnimationFrame(updateParticles);
-}
-updateParticles();
-
-/* Resize canvas on orientation change */
-window.addEventListener('resize', ()=>{ canvas.width = innerWidth; canvas.height = innerHeight; });
-
-/* Click handler - open lid by rotating the lid group visually
-   (SVG elements can't be rotated with CSS transform directly in all browsers,
-    so we change the transform attribute on the group).
-*/
-let opened = false;
-giftBox.addEventListener('click', async (e) => {
-  if (opened) return;
-  opened = true;
-
-  // attempt to start music (works if user gesture allowed)
-  try { await bgMusic.play(); } catch(e){ /* ignore - some browsers still block */ }
-
-  // rotate the lidGroup by setting transform attribute
-  const lidGroup = document.getElementById('lidGroup');
-  if (lidGroup) {
-    // animate via small JS loop for a smooth rotation
-    let angle = 0;
-    const target = -120; // degrees
-    const step = 12;
-    const anim = setInterval(()=>{
-      angle -= step;
-      if (angle <= target) {
-        angle = target;
-        clearInterval(anim);
-      }
-      lidGroup.setAttribute('transform', `translate(0,0) rotateX(0) rotate(${angle} 100 30)`);
-      // best-effort visual: also set CSS transform for fallback
-      try { lidRect.style.transform = `rotateX(${angle}deg)`; } catch(e){}
-    }, 30);
-  } else {
-    // fallback: simple CSS rotation on lidRect
-    lidRect.style.transition = 'transform 600ms cubic-bezier(.2,.9,.3,1)';
-    lidRect.style.transform = 'rotateX(-100deg)';
-  }
-
-  // show sparkle text and particle bursts
-  sparkleText.style.display = 'block';
-  // create quick particle bursts centered near top-center
-  const cx = innerWidth/2, cy = innerHeight/2 - 40;
-  const burstInterval = setInterval(()=> createParticles(cx + (Math.random()-0.5)*80, cy + (Math.random()-0.5)*40), 110);
-
-  // after 5 seconds stop sparkle and reveal letter
-  setTimeout(()=>{
-    clearInterval(burstInterval);
-    sparkleText.style.display = 'none';
-    // clear particles gradually
-    // reveal letter and hearts
-    letterContainer.style.display = 'block';
+giftBox.addEventListener('click', () => {
+  giftBox.classList.add('hidden'); // completely remove gift box after click
+  pianoMusic.play();
+  setTimeout(() => {
+    letter.style.display = 'block';
+  }, 1000);
+  setTimeout(() => {
     loveText.style.display = 'block';
-    showHearts();
-  }, 5000);
+  }, 3500);
 });
 </script>
+
 </body>
 </html>
