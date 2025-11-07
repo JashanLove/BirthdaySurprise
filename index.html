@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -18,34 +18,54 @@
     font-family: "Poppins", sans-serif;
   }
 
+  h2 {
+    font-size: 1.6em;
+    color: #ff4081;
+    margin-bottom: 20px;
+    animation: fadeIn 2s ease-in;
+  }
+
   #giftBox {
     width: 150px;
     height: 150px;
-    background: radial-gradient(circle, #ff6699, #ff3366);
-    border-radius: 20px;
+    background: linear-gradient(135deg, #ff66b2, #ff3385);
     position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     cursor: pointer;
     animation: float 3s ease-in-out infinite;
   }
 
+  /* Lid of the gift */
+  #giftLid {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    width: 150px;
+    height: 40px;
+    background: linear-gradient(135deg, #ff80bf, #ff4da6);
+    border-radius: 10px 10px 0 0;
+    transition: transform 0.5s ease;
+    transform-origin: bottom center;
+  }
+
+  /* Ribbon */
   #giftBox::before, #giftBox::after {
     content: "";
     position: absolute;
     background: #fff;
   }
-
   #giftBox::before {
-    width: 30px;
-    height: 150px;
+    width: 20px;
+    height: 100%;
+    left: 65px;
+    top: 0;
   }
-
   #giftBox::after {
-    width: 150px;
-    height: 30px;
+    width: 100%;
+    height: 20px;
+    top: 65px;
+    left: 0;
   }
 
   @keyframes float {
@@ -53,13 +73,13 @@
     50% { transform: translateY(-10px); }
   }
 
-  #sparkleText, #loveText, #letterContainer {
+  #sparkleText, #letterContainer, #loveText {
     display: none;
     text-align: center;
   }
 
   #sparkleText {
-    font-size: 2.2em;
+    font-size: 2.3em;
     color: #ff66b2;
     animation: sparkle 1s infinite alternate;
   }
@@ -83,7 +103,7 @@
     background: linear-gradient(45deg, #ff3366, #ff66b2, #ffccff);
     -webkit-background-clip: text;
     color: transparent;
-    animation: colorShift 3s infinite alternate;
+    animation: colorShift 3s infinite alternate, fadeIn 2s ease-in forwards;
     margin-top: 20px;
   }
 
@@ -107,8 +127,13 @@
 </head>
 <body>
 
-<div id="giftBox"></div>
+<h2>Here's a gift for you 🎁</h2>
+<div id="giftBox">
+  <div id="giftLid"></div>
+</div>
+
 <div id="sparkleText">🎉 Happy Birthday Dalvi 🎉</div>
+
 <div id="letterContainer">
   <p>Here's a letter for you 💌</p>
   <img src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Letter">
@@ -119,11 +144,13 @@
 
 <script>
 const gift = document.getElementById("giftBox");
+const lid = document.getElementById("giftLid");
 const sparkle = document.getElementById("sparkleText");
 const letter = document.getElementById("letterContainer");
+const loveText = document.getElementById("loveText");
 const music = document.getElementById("bgMusic");
 
-// canvas for sparkles
+// Create canvas sparkles
 const canvas = document.createElement("canvas");
 document.body.appendChild(canvas);
 const ctx = canvas.getContext("2d");
@@ -158,22 +185,27 @@ function drawSparkles() {
   });
   requestAnimationFrame(drawSparkles);
 }
-
 drawSparkles();
 
 gift.addEventListener("click", () => {
-  gift.style.display = "none";
-  document.body.style.background = "#000"; // change to black for sparkle
-  sparkle.style.display = "block";
-  music.play().catch(e => console.log(e));
-
-  let interval = setInterval(() => createSparkle(innerWidth/2, innerHeight/2), 100);
+  // open lid animation
+  lid.style.transform = "rotateX(150deg)";
   setTimeout(() => {
-    clearInterval(interval);
-    sparkle.style.display = "none";
-    document.body.style.background = "#fff0f5";
-    letter.style.display = "block";
-  }, 5000);
+    gift.style.display = "none";
+    document.querySelector("h2").style.display = "none";
+    document.body.style.background = "#000";
+    sparkle.style.display = "block";
+    music.play().catch(e => console.log(e));
+    
+    let interval = setInterval(() => createSparkle(innerWidth/2, innerHeight/2), 100);
+    setTimeout(() => {
+      clearInterval(interval);
+      sparkle.style.display = "none";
+      document.body.style.background = "#fff0f5";
+      letter.style.display = "block";
+      loveText.style.display = "block";
+    }, 5000);
+  }, 800);
 });
 </script>
 
