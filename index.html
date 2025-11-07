@@ -18,6 +18,14 @@
     flex-direction: column;
   }
 
+  .message {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff1493;
+    margin-bottom: 15px;
+    animation: fadeIn 2s ease-in-out;
+  }
+
   .gift-box {
     position: relative;
     width: 150px;
@@ -58,25 +66,12 @@
     transform: rotate(45deg);
   }
 
-  .message {
-    position: absolute;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    top: -40px;
-    width: 100%;
-    color: #ff1493;
-    opacity: 1;
-    transition: opacity 1s ease;
-  }
-
   #letter {
     display: none;
     position: absolute;
     width: 80%;
     max-width: 400px;
-    height: auto;
-    z-index: 5;
+    z-index: 3;
     animation: fadeIn 2s forwards;
   }
 
@@ -85,13 +80,27 @@
     font-size: 30px;
     color: #ff1a75;
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 300px;
+    z-index: 4;
     text-align: center;
     animation: fadeIn 3s forwards;
   }
 
+  .heart {
+    position: absolute;
+    color: #ff66b3;
+    font-size: 20px;
+    animation: floatUp 5s linear infinite;
+    opacity: 0.8;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-700px) scale(1.5); opacity: 0; }
+  }
+
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
@@ -100,12 +109,14 @@
 </head>
 <body>
 
+<div class="message" id="msg">Here's a gift for you 🎁</div>
+
 <div class="gift-box" id="giftBox">
   <div class="ribbon"></div>
-  <div class="message">Here's a gift for you 🎁</div>
 </div>
 
 <img id="letter" src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Letter">
+
 <div id="loveText">I love you Bandri ❤️</div>
 
 <audio id="pianoMusic" preload="auto">
@@ -116,17 +127,37 @@
 const giftBox = document.getElementById('giftBox');
 const letter = document.getElementById('letter');
 const loveText = document.getElementById('loveText');
+const msg = document.getElementById('msg');
 const pianoMusic = document.getElementById('pianoMusic');
 
 giftBox.addEventListener('click', () => {
-  giftBox.classList.add('hidden'); // completely remove gift box after click
   pianoMusic.play();
+  giftBox.classList.add('hidden');
+  msg.classList.add('hidden');
+
+  // Show letter
   setTimeout(() => {
     letter.style.display = 'block';
   }, 1000);
+
+  // Add floating hearts
+  setTimeout(() => {
+    for (let i = 0; i < 15; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.innerHTML = '❤️';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.top = Math.random() * 100 + 'vh';
+      heart.style.animationDuration = 4 + Math.random() * 3 + 's';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+  }, 2000);
+
+  // Show "I love you" text
   setTimeout(() => {
     loveText.style.display = 'block';
-  }, 3500);
+  }, 4000);
 });
 </script>
 
