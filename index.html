@@ -8,136 +8,152 @@
   body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    background: linear-gradient(135deg, #ffd6e0, #fff0f5, #ffe6f2);
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-
-  .gift-box {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    background: #ff4da6;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease;
-  }
-
-  .gift-box::before {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 150px;
-    background: #fff;
-    left: 65px;
-  }
-
-  .gift-box::after {
-    content: '';
-    position: absolute;
-    height: 20px;
-    width: 150px;
-    background: #fff;
-    top: 65px;
-  }
-
-  .ribbon {
-    position: absolute;
-    top: -25px;
-    left: 35px;
-    width: 80px;
-    height: 50px;
-    background: #ff66b3;
-    border-radius: 50%;
-    transform: rotate(45deg);
-  }
-
-  .message {
-    position: absolute;
+    background: linear-gradient(135deg, #ffe6f2, #fff5f9);
+    font-family: 'Poppins', sans-serif;
     text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    top: -40px;
-    width: 100%;
-    color: #ff1493;
-    opacity: 1;
-    transition: opacity 1s ease;
-  }
-
-  /* Center the letter perfectly on screen */
-  #letter {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -60%);
-    width: 80%;
-    max-width: 400px;
-    height: auto;
-    z-index: 10;
-    animation: fadeIn 2s forwards;
-  }
-
-  /* Center the I love you text below the letter */
-  #loveText {
-    display: none;
-    position: fixed;
-    top: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 30px;
-    color: #ff1a75;
-    font-weight: bold;
-    text-align: center;
-    animation: fadeIn 3s forwards;
-    z-index: 11;
+    overflow-x: hidden;
+    animation: fadeIn 3s ease-in-out;
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, -40%); }
-    to { opacity: 1; transform: translate(-50%, -50%); }
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
-  .hidden { display: none; }
+  h1 {
+    font-size: 2.5em;
+    color: #ff4081;
+    margin-top: 60px;
+    animation: float 3s infinite ease-in-out;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+
+  .gift {
+    margin-top: 50px;
+    font-size: 100px;
+    cursor: pointer;
+    transition: transform 0.5s;
+  }
+
+  .gift:hover {
+    transform: scale(1.1);
+  }
+
+  .message, .letter, .love {
+    display: none;
+    animation: fadeIn 2s ease-in-out;
+  }
+
+  .letter img {
+    margin-top: 30px;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  .love {
+    font-size: 2em;
+    color: #ff2f92;
+    margin-top: 40px;
+    animation: float 3s infinite ease-in-out;
+  }
+
+  .hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .heart {
+    position: absolute;
+    bottom: -10px;
+    color: #ff4d88;
+    font-size: 24px;
+    animation: rise 6s linear infinite;
+  }
+
+  @keyframes rise {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+  }
 </style>
 </head>
+
 <body>
+  <h1>🎁 Tap the Gift 🎁</h1>
+  <div class="gift" id="gift">🎁</div>
 
-<div class="gift-box" id="giftBox">
-  <div class="ribbon"></div>
-  <div class="message">Here's a gift for you 🎁</div>
-</div>
+  <div class="message" id="message">
+    <h1>🎉 Happy Birthday Dalvi 🎉</h1>
+  </div>
 
-<img id="letter" src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Letter">
-<div id="loveText">I love you Bandri ❤️</div>
+  <div class="letter" id="letter">
+    <p>Here’s a letter for you 💌</p>
+    <img src="https://raw.githubusercontent.com/JashanLove/BirthdaySurprise/main/letter.jpg" alt="Letter">
+  </div>
 
-<audio id="pianoMusic" preload="auto">
-  <source src="https://github.com/JashanLove/BirthdaySurprise/raw/main/piano.mp3" type="audio/mpeg">
-</audio>
+  <div class="love" id="love">
+    <p>💖 I LOVE YOU 💖</p>
+  </div>
+
+  <div class="hearts" id="hearts"></div>
+
+  <audio id="bgMusic" loop>
+    <source src="https://github.com/JashanLove/BirthdaySurprise/raw/main/piano.mp3" type="audio/mp3">
+  </audio>
 
 <script>
-const giftBox = document.getElementById('giftBox');
+const gift = document.getElementById('gift');
+const message = document.getElementById('message');
 const letter = document.getElementById('letter');
-const loveText = document.getElementById('loveText');
-const pianoMusic = document.getElementById('pianoMusic');
+const love = document.getElementById('love');
+const heartsContainer = document.getElementById('hearts');
+const bgMusic = document.getElementById('bgMusic');
 
-giftBox.addEventListener('click', () => {
-  giftBox.classList.add('hidden');
-  pianoMusic.play();
+gift.addEventListener('click', () => {
+  // Start music on click (bypasses autoplay restrictions)
+  bgMusic.play().catch(err => console.log("Music playback blocked:", err));
+
+  gift.style.display = 'none';
+  message.style.display = 'block';
+  document.body.style.background = 'black';
+  document.body.style.color = 'white';
+
   setTimeout(() => {
+    document.body.style.background = 'linear-gradient(135deg, #ffe6f2, #fff5f9)';
+    message.style.display = 'none';
     letter.style.display = 'block';
-  }, 1000);
-  setTimeout(() => {
-    loveText.style.display = 'block';
-  }, 3500);
-});
-</script>
+    startHearts();
+  }, 5000);
 
+  setTimeout(() => {
+    love.style.display = 'block';
+  }, 10000);
+});
+
+function startHearts() {
+  setInterval(() => {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.textContent = '💗';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = Math.random() * 2 + 4 + 's';
+    heartsContainer.appendChild(heart);
+    setTimeout(() => {
+      heart.remove();
+    }, 6000);
+  }, 500);
+}
+</script>
 </body>
 </html>
